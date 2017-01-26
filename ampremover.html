@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<p>Paste AMP link here:</p>
+<input id="demo" type="text" value=""><br>
+<button onclick="myFunction()">Try it</button>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+function myFunction() {
+    str = document.getElementById("demo").value; 
+	str = str.replace(/(http(s)?:\/\/.)(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=])(amp\/)?(amp.)/g, "");
+    str = str.replace("amp/", "");
+	str = str.replace("s/", "");
+	str = str.replace("p/", "");
+	str = str.replace("amphtml/", "");
+	document.getElementById("demo").value = str;
+}
+</script>
+
+</body>
+</html>
