@@ -2,20 +2,51 @@
 <html>
 <body>
 <link href="style.css" rel="stylesheet" type="text/css" />
-<p>Paste AMP link here:</p>
-<input id="demo" type="text" value=""><br>
-<button onclick="myFunction()">Try it</button>
+<p class="textabove">AMP Link remover</p>
+<p class="text">Get the original link by removing AMP strings. Paste the AMP link here and click Remove:</p>
+<input id="textbox" type="text" value=""><br>
+<button onclick="myFunction()">Remove AMP</button><br/>
+<div class="button2" onclick="openUrl()">Test URL</button></div><button id="copy" class="buttoncopy">Copy in clipboard<span class="copiedtext"aria-hidden="true">Copied</span></button>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
 function myFunction() {
-    str = document.getElementById("demo").value; 
-	str = str.replace(/(http(s)?:\/\/.)(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=])(amp\/)?(amp.)/g, "");
-    str = str.replace("amp/", "");
-	str = str.replace("s/", "");
-	str = str.replace("p/", "");
+    str = document.getElementById("textbox").value; 
+	//str = str.replace(/(http(s)?:\/\/.)(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=])(amp\/(s)?)?(amp.)/g, "");
+    str = str.replace(/(http(s):\/\/.)(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\//g, "");
+	str = str.replace(/(amp\/([p-s]\/)?)/, "");
+	str = str.replace(/(amp\/amp\.)/, "");
+	str = str.replace(/(amp\/(p\/)?\/)/, "");
 	str = str.replace("amphtml/", "");
-	document.getElementById("demo").value = str;
+	document.getElementById("textbox").value = str;
 }
+
+function openUrl() {
+	var url = document.getElementById( 'textbox' ).value;
+	alert(url);
+	window.open(url, '_blank');
+}
+
+var toCopy  = document.getElementById( 'textbox' ),
+    btnCopy = document.getElementById( 'copy' ),
+    paste   = document.getElementById( 'paste' );
+
+btnCopy.addEventListener( 'click', function(){
+  toCopy.select();
+
+  if ( document.execCommand( 'copy' ) ) {
+      btnCopy.classList.add( 'copied' );
+    
+      var temp = setInterval( function(){
+        btnCopy.classList.remove( 'copied' );
+        clearInterval(temp);
+      }, 600 );
+    
+  } else {
+    console.info( 'document.execCommand went wrong…' )
+  }
+  
+  return false;
+} );
 </script>
 
 </body>
