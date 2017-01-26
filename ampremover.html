@@ -3,43 +3,43 @@
 <body>
 <link href="style.css" rel="stylesheet" type="text/css" />
 <p class="textabove">AMP Link remover</p>
-<p class="text">Get the original link by removing AMP strings. Paste the AMP link here and click Remove:</p>
+<p class="text">Get the original link by removing the AMP strings. Paste the AMP link here and click Remove:</p>
 <input id="textbox" type="text" value=""><br>
 <button onclick="myFunction()">Remove AMP</button><br/>
-<div class="button2" onclick="openUrl()">Test URL</button></div><button id="copy" class="buttoncopy">Copy in clipboard<span class="copiedtext"aria-hidden="true">Copied</span></button>
+<div class="button2" onclick="openUrl()">Test URL</button></div><button id="copy" class="buttoncopy">Copy in clipboard</button>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
+var toCopy  = document.getElementById( 'textbox' ),
+    btnCopy = document.getElementById( 'copy' ),
+    paste   = document.getElementById( 'paste' );
+var timeout;
+
 function myFunction() {
     str = document.getElementById("textbox").value; 
-	//str = str.replace(/(http(s)?:\/\/.)(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=])(amp\/(s)?)?(amp.)/g, "");
+	str = str.replace(/(amp\/([p-s]\/)?(amp.)?/g, "");
     str = str.replace(/(http(s):\/\/.)(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\//g, "");
-	str = str.replace(/(amp\/([p-s]\/)?)/, "");
-	str = str.replace(/(amp\/amp\.)/, "");
-	str = str.replace(/(amp\/(p\/)?\/)/, "");
+	str = str.replace(/(amp\/amp\.)/g, "");
+	str = str.replace(/(amp\/(p\/)?\/)/g, "");
 	str = str.replace("amphtml/", "");
 	document.getElementById("textbox").value = str;
 }
 
 function openUrl() {
 	var url = document.getElementById( 'textbox' ).value;
-	alert(url);
+	url = 'http://' + url;
 	window.open(url, '_blank');
 }
 
-var toCopy  = document.getElementById( 'textbox' ),
-    btnCopy = document.getElementById( 'copy' ),
-    paste   = document.getElementById( 'paste' );
+function changeTextBack(){
+	document.getElementById("copy").innerHTML = "Copy in clipboard";
+}
 
 btnCopy.addEventListener( 'click', function(){
   toCopy.select();
 
   if ( document.execCommand( 'copy' ) ) {
-      btnCopy.classList.add( 'copied' );
-    
-      var temp = setInterval( function(){
-        btnCopy.classList.remove( 'copied' );
-        clearInterval(temp);
-      }, 600 );
+      document.getElementById("copy").innerHTML = "Copied";
+	  timeout = setTimeout(changeTextBack, 2000);
     
   } else {
     console.info( 'document.execCommand went wrong…' )
@@ -47,6 +47,7 @@ btnCopy.addEventListener( 'click', function(){
   
   return false;
 } );
+
 </script>
 
 </body>
